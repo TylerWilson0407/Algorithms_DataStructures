@@ -57,5 +57,56 @@ class UnorderedList():
         else:
             previous.setNext(current.getNext())
 
+class OrderedList():
 
+    def __init__(self):
+        self.head = None
 
+    def isEmpty(self):
+        return self.head == None
+
+    def size(self):
+        current = self.head
+        count = 0
+        while current != None:
+            current = current.getNext()
+            count += 1
+        return count
+
+    def remove(self,item):
+        current = self.head
+        previous = None
+        found = False
+        while not found:
+            if current.getData() == item:
+                found = True
+            else:
+                previous = current
+                current = current.getNext()
+        if previous == None:
+            self.head = current.getNext()
+        else:
+            previous.setNext(current.getNext())
+
+    def add(self, item):
+        temp = Node(item)
+        current = self.head
+        found = False
+        while not found:
+            if (current.getData() > item) or (current.getNext() == None):
+                found = True
+            else:
+                previous = current
+                current = current.getNext()
+        if previous == None:
+            temp.setNext(self.head)
+            self.head = temp
+        else:
+            previous.setNext(temp)
+            temp.setNext(current)
+
+    def search(self,item):
+        current = self.head
+        while not ((current == None) or (current.getData() == item) or not (current.getData() < item)):
+            current = current.getNext()
+        return current != None

@@ -31,13 +31,13 @@ def buildParseTree(expr):
             raise ValueError
     return pt
 
-pt = buildParseTree(' ( 3 + ( 7 + 4 ) ) ')
-pt.postorder()
-print '###'
-pt.preorder()
-print '###'
-pt.inorder()
-print '###'
+pt = buildParseTree(' ( ( 8 + 5 ) * ( 3 + ( 7 - 4 ) ) ) ')
+# pt.postorder()
+# print '###'
+# pt.preorder()
+# print '###'
+# pt.inorder()
+# print '###'
 
 import operator
 
@@ -49,4 +49,71 @@ def evaluate(pt):
         op = operators[pt.getRootVal()]
         return op(evaluate(pt.getLeftChild()), evaluate(pt.getRightChild()))
 
-print evaluate(pt)
+# print evaluate(pt)
+
+def preorder(pt):
+    if pt:
+        print pt.getRootVal()
+        preorder(pt.getLeftChild())
+        preorder(pt.getRightChild())
+
+# preorder(pt)
+# print '###'
+
+def inorder(pt):
+    if pt:
+        inorder(pt.getLeftChild())
+        print pt.getRootVal()
+        inorder(pt.getRightChild())
+
+def postorder(pt):
+    if pt:
+        postorder(pt.getLeftChild())
+        postorder(pt.getRightChild())
+        print pt.getRootVal()
+
+# inorder(pt)
+# print '###'
+# postorder(pt)
+# print '###'
+
+def postordereval(pt):
+    operators = {'+': operator.add, '-': operator.sub, '*': operator.mul, '/': operator.truediv}
+    if pt:
+        if pt.getRightChild() and pt.getLeftChild():
+            return operators[pt.getRootVal()](postordereval(pt.getLeftChild()), postordereval(pt.getRightChild()))
+        else:
+            return pt.getRootVal()
+
+# print postordereval(pt)
+
+def printexpr(pt):
+    sVal = ''
+    if pt and not (pt.getLeftChild() and pt.getRightChild()):
+        sVal = printexpr(pt.getLeftChild())
+        sVal = sVal + str(pt.getRootVal())
+        sVal = sVal + printexpr(pt.getRightChild())
+    elif pt:
+        sVal = '(' + printexpr(pt.getLeftChild())
+        sVal = sVal + str(pt.getRootVal())
+        sVal = sVal + printexpr(pt.getRightChild()) + ')'
+    return sVal
+
+# print printexpr(pt)
+
+from pythonds.trees.binheap import BinHeap
+
+# bh = BinHeap()
+# bh.insert(5)
+# bh.insert(7)
+# bh.insert(3)
+# bh.insert(11)
+#
+# print(bh.delMin())
+#
+# print(bh.delMin())
+#
+# print(bh.delMin())
+#
+# print(bh.delMin
+

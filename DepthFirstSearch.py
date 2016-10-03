@@ -58,6 +58,7 @@ def stronglyCC(g):
     g.dfs()
     gt = transposeGraph(g)
     gt.dfsByFinish()
+    # Still need to output SCC trees somehow???
 
 
 def transposeGraph(g):

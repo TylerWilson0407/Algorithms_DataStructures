@@ -2,15 +2,14 @@ from pythonds.graphs import Graph, Vertex
 
 class DFSGraph(Graph):
     def __init__(self):
-        super(DFSGraph).__init__()
+        Graph.__init__(self)
         self.time = 0
 
     def dfs(self):
         for aVertex in self:
             aVertex.setColor('white')
             aVertex.setPred(-1)
-        for aVertex in self:
-            if aVertex.getColor() == 'white':
+            if aVertex.getColor == 'white':
                 self.dfsvisit(aVertex)
 
     def dfsByFinish(self):
@@ -18,7 +17,7 @@ class DFSGraph(Graph):
             aVertex.setColor('white')
             aVertex.setPred(-1)
         for aVertex in self.sortByFinish():
-            if aVertex.getColor() == 'white':
+            if aVertex.getColor == 'white':
                 self.dfsvisit(aVertex)
 
     # def dfsvisitByFinish(self, startVertex):
@@ -36,9 +35,9 @@ class DFSGraph(Graph):
     def sortByFinish(self):
         finList = []
         for v in self.getVertices():
-            finList.append((v.getFinish(), v))
-        finList.sort(key=lambda x: x[0], Reverse=True)
-        return [y[1] for y in finList]
+            finList.append((self.getVertex(v).getFinish(), v))
+        finList.sort(key=lambda x: x[0], reverse=True)
+        return [self.getVertex(y[1]) for y in finList]
 
     def dfsvisit(self, startVertex):
         startVertex.setColor('gray')
@@ -59,19 +58,23 @@ def stronglyCC(g):
     gt = transposeGraph(g)
     gt.dfsByFinish()
     # Still need to output SCC trees somehow???
+    idList = []
+    for v in gt:
+         idList.append(v.getId)
+    return idList
 
 
 def transposeGraph(g):
-    newGraph = Graph()
+    newGraph = DFSGraph()
     for vertex1 in g.getVertices():
-        for vertex2 in vertex1.getVertices():
+        for vertex2 in g.getVertices():
             if vertex1 != vertex2:
                 newGraph.addEdge(vertex2, vertex1)
     return newGraph
 
 def buildSampleGraph():
     letters = 'abcdefghi'
-    sg = Graph()
+    sg = DFSGraph()
     for letter in letters:
         sg.addVertex(letter)
     sg.addEdge('a', 'b')
@@ -90,3 +93,4 @@ def buildSampleGraph():
     return sg
 
 sg = buildSampleGraph()
+scc = stronglyCC(sg)
